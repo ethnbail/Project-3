@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+
+using namespace std;
+
+void swap(int &a, int &b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int partition(vector<int> &v, int low, int high) {
+    int pivot = v[high];
+    int i = low;
+    for (int j = low; j < high; j++) {
+        if (v[j] <= pivot) {
+            swap(v[i], v[j]);
+            i++;
+        }
+    }
+    swap(v[i], v[high]);
+    return i;
+}
+
+int quickSelect(vector<int> &v, int low, int high, int k) {
+    if (low == high) return v[low];
+
+    int pivotIndex = partition(v, low, high);
+
+    if (k == pivotIndex) {
+        return v[k];
+    } else if (k < pivotIndex) {
+        return quickSelect(v, low, pivotIndex - 1, k);
+    } else {
+        return quickSelect(v, pivotIndex + 1, high, k);
+    }
+}
+
+int main() {
+    srand(static_cast<unsigned int>(time(0)));
+
+    // Generate a large random sequence
+    int n = 1000000; // Size of the sequence
+    vector<int> numbers(n);
+    for (int &num : numbers) {
+        num = rand() % 100000; // Numbers between 0 and 99999
+    }
+
+    int k = n / 2;
+    
+    // Measure QuickSelect
+    clock_t start_quickselect = clock();
+    int median_quickselect = quickSelect(numbers, 0, n - 1, k);
+    clock_t end_quickselect = clock();
+    
+    // Measure sorting
+    clock_t start_sort = clock();
+    sort(numbers.begin(), numbers.end());
+    int median_sort = numbers[k];
+    clock_t end_sort = clock();
+    
+    cout << "Median using Quickselect: " << median_quickselect << endl;
+    cout << "Time taken for Quickselect: " << (double)(end_quickselect - start_quickselect) / CLOCKS_PER_SEC << " seconds" << endl;
+    
+    cout << "Median using sort: " << median_sort << endl;
+    cout << "Time taken for sorting: " << (double)(end_sort - start_sort) / CLOCKS_PER_SEC << " seconds" << endl;
+
+    return 0;
+}
