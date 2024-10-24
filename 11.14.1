@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Phone keypad
+const vector<string> numtolet = {
+    "",     // 0
+    "",     // 1
+    "abc",  // 2
+    "def",  // 3
+    "ghi",  // 4
+    "jkl",  // 5
+    "mno",  // 6
+    "pqrs", // 7
+    "tuv",  // 8
+    "wxyz"  // 9
+};
+
+// Gets all possible combinations 
+void generateCombinations(const string& numbers, int k, string current) {
+    if (k == numbers.size()) {
+        cout << current << endl;
+        return;
+    }
+
+    // Get the current digit and corresponding characters
+    int digit = numbers[k] - '0';
+    const string& letters = numtolet[digit];
+
+    // Skips number 0 and 1 
+    if (letters.empty()) {
+        generateCombinations(numbers, k + 1, current);
+        return;
+    }
+
+    // Go through each letter that matches the current number
+    for (int i = 0; i < letters.size(); ++i) {
+        char ch = letters[i];
+        generateCombinations(numbers, k + 1, current + ch);
+    }
+}
+
+int main() {
+    string numbers;
+    cout << "Enter a number: ";
+    cin >> numbers;
+
+    cout << "Possible combinations:\n";
+    generateCombinations(numbers, 0, "");
+
+    return 0;
+}
