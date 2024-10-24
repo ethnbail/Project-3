@@ -1,6 +1,7 @@
 /**
       Project id: Group Project C 
       Project Name: Group 3
+      Problem: 12.17.7
       Programmer: [Ethan Bailey]
       Date: October 23, 2024
       Version: 1.1  
