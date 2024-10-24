@@ -1,0 +1,48 @@
+#include <iostream> // Include the iostream library for input and output operations, mainly for using cout.
+
+#include <stack> // Include the stack library to use the stack data structure.
+
+#include <string> // Include the string library to use the string type.
+
+using namespace std; // Use the standard namespace to avoid typing "std::" before standard library types and functions.
+
+class DiskMover { // Define a class named DiskMover.
+    stack<string> moves; // Declare a stack of strings to store the moves needed for solving the puzzle.
+    int disks; // Declare an integer to store the number of disks.
+    int from; // Declare an integer to store the starting peg.
+    int to; // Declare an integer to store the destination peg.
+
+    void fillMoves(int n, int fromPeg, int toPeg, int auxPeg) { // Private method to populate the moves stack.
+        if (n > 0) { // If there are disks to move.
+            fillMoves(n - 1, fromPeg, auxPeg, toPeg); // Recursively call fillMoves to move n-1 disks to the auxiliary peg.
+            moves.push("Move disk from peg " + to_string(fromPeg) + " to " + to_string(toPeg)); // Push the move of the nth disk to the moves stack.
+            fillMoves(n - 1, auxPeg, toPeg, fromPeg); // Recursively call fillMoves to move the n-1 disks from auxiliary peg to the target peg.
+        }
+    }
+
+public:
+    DiskMover(int d, int f, int t) : disks(d), from(f), to(t) { // Constructor of the class, initializing disks, from, and to with the given values.
+        fillMoves(d, f, t, 6 - f - t); // Call fillMoves to fill the moves stack with the required moves to solve the puzzle.
+    }
+
+    bool has_more_moves() { // Public method to check if there are more moves left.
+        return !moves.empty(); // Return true if the moves stack is not empty; otherwise, return false.
+    }
+
+    string next_move() { // Public method to get the next move.
+        if (!moves.empty()) { // If there are moves left.
+            string move = moves.top(); // Get the top move from the moves stack.
+            moves.pop(); // Remove the top move from the stack.
+            return move; // Return the move.
+        }
+        return ""; // If there are no moves left, return an empty string.
+    }
+};
+
+int main() { // Start of the main function.
+    DiskMover mover(5, 1, 3); // Create an instance of DiskMover to solve the puzzle with 5 disks moving from peg 1 to peg 3.
+    while (mover.has_more_moves()) { // While there are moves left to perform.
+        cout << mover.next_move() << endl; // Print the next move and then move to a new line.
+    }
+    return 0; // Return 0 to indicate successful completion of the program.
+}
