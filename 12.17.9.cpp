@@ -5,7 +5,8 @@
       Programmer: [Ethan Bailey]
       Date: October 23, 2024
       Version: 1.1  
-      Description: This code compares 2 file names
+      Description: This code compares two file names so that it
+      is easier for a human to read it.
 */
 
 #include <iostream>
