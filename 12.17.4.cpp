@@ -25,16 +25,17 @@ int getDigit(int element, int place){
 }
 
 void radixSort(vector<int>& arr){
+    // Goes through each place value
     for(int place = 1; place <= 100; place *= 10){
         vector<vector<int>> buckets(10); // creates 10 bucks 0-9 for each digit
-
+    // Places each number into the appropriate bucket
     for (int i = 0; i < arr.size(); i++){
     int digit = getDigit(arr[i], place);
     buckets[digit].push_back(arr[i]);
 }
 
 arr.clear(); // clears original array for next iteration
-
+// Puts the numbers back into the array in order
 for(int i = 0; i < buckets.size(); i++){
     for(int j = 0; j < buckets[i].size(); j++){
         arr.push_back(buckets[i][j]);
